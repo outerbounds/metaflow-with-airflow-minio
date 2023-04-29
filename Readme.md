@@ -44,7 +44,7 @@ Ensure the following software is installed on your system:
 5. **Install metaflow and kubernetes**:
 
    ```bash
-   pip install metaflow kubernetes
+   pip install git+https://github.com/netflix/metaflow.git@master kubernetes
    ```
 
 6. **Create a metaflow bucket** named `metaflow-test` in MinIO using the [create-bucket.py](./create-bucket.py) Python script.
