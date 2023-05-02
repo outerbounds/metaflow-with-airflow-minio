@@ -47,7 +47,10 @@ Ensure the following software is installed on your system:
    pip install git+https://github.com/netflix/metaflow.git@master kubernetes
    ```
 
-6. **Create a metaflow bucket** named `metaflow-test` in MinIO using the [create-bucket.py](./create-bucket.py) Python script.
+6. **Create a metaflow bucket** named `metaflow-test` in MinIO using the [create-bucket.py](./create-bucket.py) Python script. The `--access-key`/`--secret-key` correspond to the `rootUser` / `rootPassword` set in Step 4. 
+   ```bash
+   python create_bucket.py --access-key rootuser --secret-key rootpass123 --bucket-name metaflow-test
+   ```
 
 7. **Create an ngrok tunnel** to the port-forwarded MinIO service in a separate terminal window:
 
@@ -55,10 +58,10 @@ Ensure the following software is installed on your system:
    ngrok http 9000
    ```
 
-8. **Create a Kubernetes secret in MinIO**:
+8. **Create a Kubernetes secret for MinIO.** This secret will be used by Metaflow Tasks and Metaflow UI running on Kubernetes to access data stored in MinIO:
 
    ```sh
-   kubectl create secret generic aws-secret --from-literal=AWS_ACCESS_KEY_ID=rootuser --from-literal=AWS_SECRET_ACCESS_KEY=rootpass123
+   kubectl create secret generic minio-secret --from-literal=AWS_ACCESS_KEY_ID=rootuser --from-literal=AWS_SECRET_ACCESS_KEY=rootpass123
    ```
 
 9. **Install Metaflow in the `default` namespace and enable ingress on minikube**:
@@ -71,7 +74,7 @@ Ensure the following software is installed on your system:
    	--namespace default \
        --set metaflow-ui.METAFLOW_DATASTORE_SYSROOT_S3=s3://metaflow-test/metaflow \
        --set metaflow-ui.METAFLOW_S3_ENDPOINT_URL="<NGROK-TUNNEL-URL-COMES-HERE>" \
-       --set "metaflow-ui.envFrom[0].secretRef.name=aws-secret" \
+       --set "metaflow-ui.envFrom[0].secretRef.name=minio-secret" \
        --set metaflow-ui.ingress.className=nginx \
        --set metaflow-ui.ingress.enabled=true
    ```
@@ -84,7 +87,7 @@ Ensure the following software is installed on your system:
         "METAFLOW_DATASTORE_SYSROOT_S3":"s3://metaflow-test/metaflow",
         "METAFLOW_DATATOOLS_S3ROOT": "s3://metaflow-test/data",
         "METAFLOW_DEFAULT_METADATA" : "service",
-        "METAFLOW_KUBERNETES_SECRETS": "aws-secret",
+        "METAFLOW_KUBERNETES_SECRETS": "minio-secret",
         "METAFLOW_SERVICE_INTERNAL_URL": "http://metaflow-metaflow-service.default.svc.cluster.local:8080",
         "METAFLOW_AIRFLOW_KUBERNETES_KUBECONFIG_CONTEXT": "minikube"
     }
