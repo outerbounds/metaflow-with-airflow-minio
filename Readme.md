@@ -72,8 +72,8 @@ Ensure the following software is installed on your system:
    helm upgrade --install metaflow .mf-tools/k8s/helm/metaflow \
    	--timeout 15m0s \
    	--namespace default \
-       --set metaflow-ui.METAFLOW_DATASTORE_SYSROOT_S3=s3://metaflow-test/metaflow \
-       --set metaflow-ui.METAFLOW_S3_ENDPOINT_URL="<NGROK-TUNNEL-URL-COMES-HERE>" \
+       --set metaflow-ui.uiBackend.metaflowDatastoreSysRootS3=s3://metaflow-test/metaflow \
+       --set metaflow-ui.uiBackend.metaflowS3EndpointURL="<NGROK-TUNNEL-URL-COMES-HERE>" \
        --set "metaflow-ui.envFrom[0].secretRef.name=minio-secret" \
        --set metaflow-ui.ingress.className=nginx \
        --set metaflow-ui.ingress.enabled=true
