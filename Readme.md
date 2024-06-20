@@ -88,7 +88,7 @@ Ensure the following software is installed on your system:
         "METAFLOW_DATATOOLS_S3ROOT": "s3://metaflow-test/data",
         "METAFLOW_DEFAULT_METADATA" : "service",
         "METAFLOW_KUBERNETES_SECRETS": "minio-secret",
-        "METAFLOW_SERVICE_INTERNAL_URL": "http://metaflow-metaflow-service.default.svc.cluster.local:8080",
+        "METAFLOW_SERVICE_URL": "http://metaflow-metaflow-service.default.svc.cluster.local:8080",
         "METAFLOW_AIRFLOW_KUBERNETES_KUBECONFIG_CONTEXT": "minikube"
     }
     ```
